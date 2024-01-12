@@ -8,20 +8,6 @@ GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class MeasurementManager:
 
-    # timeStart = 0
-    # timeInterrupt = time.monotonic()
-    # timeLastSwing = 0
-    #
-    # maxSwings = 0
-    # swingCount = -1
-    # interruptCount = 0
-    #
-    # data = []
-
-    # def __new__(cls):
-    #     if not hasattr(cls, 'instance'):
-    #         cls.instance = super(MeasurementManager, cls).__new__(cls)
-    #         return cls._instance
 
     def __init__(self):
         self.timeInterrupt = 0
