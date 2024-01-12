@@ -1,11 +1,9 @@
 import RPi.GPIO as GPIO
 import time
-import flask
-import flask_classful
 
 #Variablen
-Schwingungen = 10
-Counter = 0
+Schwingungen = 10#
+Counter = 0#
 Ausloesungen = 0
 StartZeit = 0
 EndZeit = 0
@@ -23,14 +21,14 @@ Interrupt_Pin = 18
 GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 # Callback-Funktion (Interrupt)
-# In dieser Funktion wird 
+# In dieser Funktion wird
 def Interrupt(channel):
     global Counter
     global StartZeit
     global EndZeit
     global ZwischenzeitAlt
     Zwischenzeit = time.monotonic() #Zeit merken, wenn Interrupt ausgelöst
-    
+
     print( "Counter: " + str(Counter) + " - ZeitDiff: " + str(Zwischenzeit - ZwischenzeitAlt))
     if Counter == 1:
         StartZeit = Zwischenzeit
@@ -58,7 +56,7 @@ while Counter <= Ausloesungen +1:
     time.sleep(0.25)
     # print(".") # nur ein Debug Punkt ;)
     # GPIO.add_event_detect(Interrupt_Pin, GPIO.FALLING, callback = Interrupt, bouncetime = 250)
-    
+
 GPIO.output(LED_Pin, GPIO.LOW) # Blink LED ausschalten
 
 GPIO.cleanup() # GPIO initialisierung zurücksetzten (interrupts beenden)
