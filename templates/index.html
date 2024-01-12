@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Die website der Pendel</title>
+    <link rel="stylesheet" href='/static/style.css'/>
+</head>
+<body>
+<h1>M5 Pendel</h1>
+<!-- <input type="button" onclick="alert('Das kommt noch weg...oder?')" value="Start"> -->
+    <form method="post" action="/start_measurement">
+        <button type="submit">Messung starten</button>
+    </form>
+    <h2>Periodendauer</h2>
+    <ol>
+        {% for value in data %}
+        <li>{{value}}</li>
+        {% endfor %}
+    </ol>
+</body>
+</html>
