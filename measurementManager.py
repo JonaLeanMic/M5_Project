@@ -8,7 +8,6 @@ GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class MeasurementManager:
 
-
     def __init__(self):
         self.timeInterrupt = 0
         self.timePeriodSwing = 0
@@ -18,15 +17,12 @@ class MeasurementManager:
         self.interruptCount = 0
         self.swingCount = 0
 
-
         self.data = []
 
-
     # function to stop the time of the last full swing
-    def interrupt(self,channel):
+    def interrupt(self, channel):
 
         if self.swingCount <= self.maxSwings:
-
 
             # the first full swings starts after the first interrupt
             if self.interruptCount == 0:

@@ -1,31 +1,13 @@
-# #from flask import Flask, render_template, request, redirect, flash, jsonify, make_response
-# from flask import redirect
-# from flask_classful import FlaskView, route
-# import flask
-#
-# class Flask:
-#     def __init__(self):
-#
-#         global counter
-#         counter = 0
-#
-#         app = Flask(_name_)
-#
-#         class TestView(FlaskView):
-#             @route("/")
-#             def index(self):
-#                 global counter
-#
-#                 return "<a href=\"lol\">" + str(counter) + "<//a>"
-#
-#             @route("/lol")
-#             def lol(self):
-#                 print("Hallo")
-#                 global counter
-#                 counter = counter + 1
-#                 print(counter)
-#                 return redirect("/")
-#
-#         TestView.register(app, route_base='/')
-#
-#         app.run(host='0.0.0.0', port=9000, debug=False)
+from flask import Flask, render_template
+import flask
+#from flask import render_template
+app = flask(__name__)  # , template_folder='templates'
+
+
+@app.route('/')
+def index():
+    my_list = ["Wert 1", "Wert 2", "Wert 3"]
+    return render_template('index.html', my_list=my_list)
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
