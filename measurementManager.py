@@ -9,6 +9,7 @@ GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 class MeasurementManager:
 
     def __init__(self):
+        self.start=False
         self.timeInterrupt = 0
         self.timePeriodSwing = 0
         self.timeSwingStart = 0
