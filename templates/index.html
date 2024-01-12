@@ -11,11 +11,36 @@
     <form method="post" action="/start_measurement">
         <button type="submit">Messung starten</button>
     </form>
-    <h2>Periodendauer</h2>
-    <ol>
-        {% for value in data %}
-        <li>{{value}}</li>
-        {% endfor %}
-    </ol>
+    <ul id="measurement-list"></ul>
+
+    <script>
+        // WebSocket-Verbindung erstellen
+        var socket = new WebSocket("ws://localhost:5000/socket");
+
+        // Bei Verbindungsherstellung
+        socket.onopen = function (event) {
+            console.log("WebSocket connection opened:", event);
+        };
+
+        // Bei Empfang von Daten
+        socket.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            updateList(data);
+        };
+
+        // Funktion zum Aktualisieren der Liste mit den empfangenen Daten
+        function updateList(data) {
+            var list = document.getElementById("measurement-list");
+            list.innerHTML = "";  // Liste leeren
+
+            // Neue Einträge zur Liste hinzufügen
+            data.forEach(function (item) {
+                var listItem = document.createElement("li");
+                listItem.textContent = item;
+                list.appendChild(listItem);
+            });
+        }
+    </script>
+
 </body>
 </html>

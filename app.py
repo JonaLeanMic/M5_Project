@@ -5,8 +5,8 @@ from flask_socketio import SocketIO
 
 
 GPIO.setmode(GPIO.BCM)
-Interrupt_Pin = 18
-GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+Magnet_Pin = 23  # achtung nur beispiel zahl, überprüfen
+#PIO.setup(Magnet_Pin, GPIO.OUT, initial=GPIO.HIGH) #magnet zu beginn eingeschaltet, Zeile nicht geprüft
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -17,15 +17,17 @@ mm = MeasurementManager(Magnet_Pin, socketio)
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=mm.data, measuring=GPIO.event_detected(Interrupt_Pin))
+    return render_template('index.html', data=mm.data)
 
 
 @app.route('/start_measurement', methods=['POST'])
 def start_measurement():
     if request.method == 'POST':
-        GPIO.add_event_detect(Interrupt_Pin, GPIO.FALLING, callback=mm.interrupt, bouncetime=250)
-    return render_template('index.html', data=mm.data, measuring=GPIO.event_detected(Interrupt_Pin))
+        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten
+        mm.start = True
+        #hier könnte man auch eine variable start im mm auf true setzen
+    return render_template('index.html', data=mm.data)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
