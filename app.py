@@ -2,14 +2,18 @@ from flask import Flask, render_template, request
 import flask
 from measurementManager import MeasurementManager
 import RPi.GPIO as GPIO
+from flask_socketio import SocketIO
+
 
 GPIO.setmode(GPIO.BCM)
 Interrupt_Pin = 18
 GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-mm = MeasurementManager()
-
 app = Flask(__name__)
+socketio = SocketIO(app)
+
+mm = MeasurementManager(Magnet_Pin, socketio)
+
 
 @app.route('/')
 def index():

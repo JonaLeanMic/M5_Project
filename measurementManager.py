@@ -39,9 +39,5 @@ class MeasurementManager:
 
                 self.data.append(time)
 
-            self.interruptCount += 1
-            self.swingCount = self.interruptCount/2
-
-
-mm = MeasurementManager()
-GPIO.add_event_detect(Interrupt_Pin, GPIO.FALLING, callback=mm.interrupt, bouncetime=250)
+                self.interruptCount += 1
+                self.swingCount = self.interruptCount/2
