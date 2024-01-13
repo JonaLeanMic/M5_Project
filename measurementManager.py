@@ -56,7 +56,7 @@ class MeasurementManager:
         self.data = []
         
 
-    #gibt messzustand aus 
+    #gibt messzustand aus
     def getMeasurementStatus(self):
         return self.start
 
