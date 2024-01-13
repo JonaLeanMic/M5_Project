@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--<meta charset="iso-8859-15"> -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,15 +16,14 @@
     <ol id="dataList"></ol>
 
     <button id="startButton">Messung starten</button>
-
     <button id="abortButton">Messung abbrechen</button>
-    <form action="/data_download">
-        <button id="downloadButton">Messwerte herunterladen</button>
+
+    <!-- Form für Daten herunterladen -->
+    <form action="/data_download" method="post">
+        <button type="submit" id="downloadButton">Messwerte herunterladen</button>
     </form>
 
-
     <script>
-
         document.getElementById("startButton").addEventListener("click", function (e) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", "/start_measurement", true);
@@ -43,8 +41,10 @@
         function getData() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState === 4 && this.status === 200) {
                     var data = JSON.parse(this.response)
+                    var responseData = this.responseText;
+                    document.getElementById("rawData").innerHTML = responseData.replace('True', 'Ja').replace('False', 'Nein');
                     let child = document.getElementById("dataList").lastElementChild;
                     while (child) {
                         document.getElementById("dataList").removeChild(child);
