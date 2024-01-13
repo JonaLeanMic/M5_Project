@@ -24,7 +24,7 @@
 
         document.getElementById("startButton").addEventListener("click", function (e) {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/start_measurement", true);
+            xhttp.open("POST", "/start_measurement", true);
             xhttp.send();
         }, false);
 

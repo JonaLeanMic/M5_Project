@@ -1,39 +1,33 @@
 import time
 from RPi import GPIO
 
-#
+##
 
 #singleton 
 #siehe https://python-patterns.guide/gang-of-four/singleton/
-class MeasurementManager(object):
-    _instance = None
+class MeasurementManager:
 
     def __init__(self):
-        raise RuntimeError('Nicht erlaubt - rufe instance() um einen Manager zu erhalten ')
+        print('Erstelle neue Manager Instanz')
+        self.start = False
+        self.timeInterrupt = 0
+        self.timePeriodSwing = 0
+        self.timeSwingStart = 0
+        self.maxSwings = 10
+        self.interruptCount = 0
+        self.swingCount = 0
+        self.start = False
+        self.data = []
+        GPIO.setmode(GPIO.BCM)
+        self.magnet_pin = 23
+        self.Interrupt_Pin = 18
+        GPIO.setup(self.magnet_pin, GPIO.OUT)
+        GPIO.setup(self.Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.add_event_detect(self.Interrupt_Pin, GPIO.FALLING, callback=self.interrupt, bouncetime=250)
 
 
 
-    @classmethod
-    def instance(self):
-        if self._instance is None:
-            print('Erstelle neue Manager Instanz')
-            self._instance = self.__new__(self)
-            self.start = False
-            self.timeInterrupt = 0
-            self.timePeriodSwing = 0
-            self.timeSwingStart = 0
-            self.maxSwings = 10
-            self.interruptCount = 0
-            self.swingCount = 0
-            self.start = False
-            self.data = []
-            GPIO.setmode(GPIO.BCM)
-            self.magnet_pin = 23
-            Interrupt_Pin = 18
-            GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-            GPIO.add_event_detect(Interrupt_Pin, GPIO.FALLING, callback=self.interrupt, bouncetime=250)
 
-        return self._instance
 
     #gibt daten zur�ck
     def getData(self):
@@ -69,31 +63,30 @@ class MeasurementManager(object):
     #�ndert Magnet Zustand 
     def setMagnetState(self, state):
         if state:
-            GPIO.output(GPIO.HIGH)
+            GPIO.output(self.magnet_pin, GPIO.HIGH)
         else:
-            GPIO.output(GPIO.LOW)
+            GPIO.output(self.magnet_pin, GPIO.LOW)
 
     ## function to stop the time of the last full swing
-def interrupt():
-    #wenn messung l�uft und noch nicht alle werte gesammelt wurden
-    mm=MeasurementManager.instance()
-    if mm.swingCount < mm.maxSwings and mm.start:
-                # the first full swings starts after the first interrupt
-                if mm.interruptCount == 0:
-                    print("start")
-                    mm.timeInterrupt = time.monotonic()
-                # every second interrupt is a full swing
-                elif mm.interruptCount % 2 == 0:
-                    print(mm.swingCount)
-                    mm.timeSwingStart = mm.timeInterrupt
-                    mm.timeInterrupt = time.monotonic()
-                    mm.timePeriodSwing = mm.timeInterrupt - mm.timeSwingStart
-                    print(str(mm.timePeriodSwing))
+    def interrupt(self, channel):
+        #wenn messung l�uft und noch nicht alle werte gesammelt wurden
 
-                    mm.data.append(mm.timePeriodSwing)
+        if self.swingCount <= self.maxSwings and self.start:
+                    # the first full swings starts after the first interrupt
+                    if self.interruptCount == 0:
+                        print("start")
+                        self.timeInterrupt = time.monotonic()
+                    # every second interrupt is a full swing
+                    elif self.interruptCount % 2 == 0:
+                        print(self.swingCount)
+                        self.timeSwingStart = self.timeInterrupt
+                        self.timeInterrupt = time.monotonic()
+                        self.timePeriodSwing = self.timeInterrupt - self.timeSwingStart
+                        print(str(self.timePeriodSwing))
 
+                        self.data.append(self.timePeriodSwing)
 
-                mm.interruptCount += 1
-                mm.swingCount = mm.interruptCount/2
-    else:
-        mm.endMeasurement()
+                    self.interruptCount += 1
+                    self.swingCount = self.interruptCount/2
+        else:
+            self.endMeasurement()
