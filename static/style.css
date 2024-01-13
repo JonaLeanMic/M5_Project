@@ -1,4 +1,61 @@
 body {
-    background: lightgrey;
-    color: darkslategrey;
+    background: rgb(215, 215, 215);
+    color: #0f2d2d;
+    font-family: Bahnschrift, sans-serif;
+}
+
+
+#startButton{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    /*background: #2f4f4f linear-gradient(hsl(180, 30%, 36%), transparent);*/
+    background: #19462a linear-gradient(hsla(144, 59%, 31%, 0.93), transparent);
+    border: thin solid rgb(0 0 0 / .1);
+    box-shadow: 0 .2em .4em rgb(0 0 0 / .5);
+    color: white;
+    text-shadow: 0 -.05em .05em rgb(0 0 0 / .5);
+    border-radius: 10px;
+    padding: 4% 20%;
+    font-family: Bahnschrift, sans-serif;
+}
+
+
+#abortButton{
+    background: #670f0f linear-gradient(hsl(0, 64%, 45%), transparent);
+    border: thin solid rgb(0 0 0 / .1);
+    box-shadow: 0 .2em .4em rgb(0 0 0 / .5);
+    color: white;
+    text-shadow: 0 -.05em .05em rgb(0 0 0 / .5);
+    border-radius: 10px;
+    padding: 2% 2%;
+    font-family: Bahnschrift, sans-serif;
+}
+
+#downloadButton{
+    background: #670f0f linear-gradient(hsl(276, 89%, 44%), transparent);
+    border: thin solid rgb(0 0 0 / .1);
+    box-shadow: 0 .2em .4em rgb(0 0 0 / .5);
+    color: white;
+    text-shadow: 0 -.05em .05em rgb(0 0 0 / .5);
+    border-radius: 10px;
+    padding: 2% 2%;
+    font-family: Bahnschrift, sans-serif;
+}
+
+#state{
+    width: fit-content;
+    background-color: #c5c5c5;
+    padding: 2% 2%;
+    border-radius: 10px;
+    margin-bottom: 2%;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+
+#rawData{
+    width: fit-content;
+    background-color: #c5c5c5;
+    padding: 2% 2%;
+    border-radius: 10px;
 }

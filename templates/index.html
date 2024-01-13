@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="iso-8859-15">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Measurement App</title>
+    <title>M3 Pendel</title>
+    <link rel="stylesheet" href='/static/style.css' />
 </head>
 <body>
-    <h1>Zeiten der vollstaendigen Schwuenge:</h1>
+<div class="container1" align="center">
+    <h1>M3 Pendel</h1>
+    <h2><u>Periodendauer:</u></h2>
     <div id="state"> </div>
     <div id="rawData"> </div>
     <ol id="dataList"></ol>
 
     <button id="startButton">Messung starten</button>
-
     <button id="abortButton">Messung abbrechen</button>
-    <form action="/data_download">   
-        <button id="downloadButton">Messwerte herunterladen</button> 
+
+    <!-- Form für Daten herunterladen -->
+    <form action="/data_download" method="post">
+        <button type="submit" id="downloadButton">Messwerte herunterladen</button>
     </form>
 
-
     <script>
-
         document.getElementById("startButton").addEventListener("click", function (e) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", "/start_measurement", true);
@@ -35,11 +37,14 @@
         }, false);
 
         setInterval(function () { getData(); }, 100);
+
         function getData() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState === 4 && this.status === 200) {
                     var data = JSON.parse(this.response)
+                    var responseData = this.responseText;
+                    document.getElementById("rawData").innerHTML = responseData.replace('True', 'Ja').replace('False', 'Nein');
                     let child = document.getElementById("dataList").lastElementChild;
                     while (child) {
                         document.getElementById("dataList").removeChild(child);
@@ -58,16 +63,19 @@
         }
 
         setInterval(function () { getMeasureState(); }, 100);
+
         function getMeasureState() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("state").innerHTML = "ZUSTAND:" + this.responseText;
+                if (this.readyState === 4 && this.status === 200) {
+                    var responseText = this.responseText;
+                    document.getElementById("state").innerHTML = "Messung aktiv?: " + responseText.replace('True', 'Ja').replace('False', 'Nein');
                 }
             }
             xhttp.open("GET", "/getMeasureState", true);
             xhttp.send();
         }
     </script>
+</div>
 </body>
 </html>
