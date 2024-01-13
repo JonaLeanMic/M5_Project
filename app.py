@@ -1,7 +1,14 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect,send_file
 from MOCKUPmeasurementManager import MeasurementManager
 import json
+import glob
+import os
 
+#mit diesem code wird der Console-Spam von flask ausgeschaltet 
+#beim debuggen von flask-komponenten bitte auskommentieren 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 from flask_classful import FlaskView, route
 import random
@@ -46,7 +53,15 @@ class TestView(FlaskView):
         mm.abortMeasurement()
         return redirect("/")
 
+    #api-route um messungen abzubrechen (usability)
+    @route('/data_download')
+    def download(self):
+        #nach https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder
+        list_of_files = glob.glob(os.getcwd() + "/files/*.csv" ) 
+        latest_file = max(list_of_files, key=os.path.getctime)
+        print(latest_file)
 
+        return send_file(latest_file)
 
 TestView.register(app, route_base='/')
 

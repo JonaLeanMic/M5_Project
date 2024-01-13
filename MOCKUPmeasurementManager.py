@@ -1,12 +1,10 @@
-
 from time import sleep
 from random import randrange
 from threading import Thread
+from FileCreator import FileCreator
 
 #singleton 
 #siehe https://python-patterns.guide/gang-of-four/singleton/
-
-
 
 class MeasurementManager(object):
     _instance = None
@@ -14,19 +12,19 @@ class MeasurementManager(object):
     def __init__(self):
         raise RuntimeError('Nicht erlaubt - rufe instance() um einen Manager zu erhalten ')
 
-
-
     @classmethod
     def instance(self):
         if self._instance is None:
-            print('Erstelle neue Manager Instanz')
+            print("Erstelle neue Manager Instanz")
             self._instance = self.__new__(self)
             self.start = False
             self.data = []
 
+            self.lastFilePath = ""
+
         return self._instance
 
-    #gibt daten zurück
+    #gibt die momentanen messdaten daten zurück
     def getData(self):
         return self.data
 
@@ -49,8 +47,13 @@ class MeasurementManager(object):
         if self.start == True:
             print("[MOCKUP] ending measurement")
             self.start = False
-            self.setMagnetState(False)
-            self.fakedatathread.join()
+            self.setMagnetState(True)
+            FileCreator.writeOutData(self.data)
+            try:
+                self.fakedatathread.join()
+            except Exception as e:
+                print("Error in End Measurment, the thread has probably already been ended ")
+
 
     #beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
     def abortMeasurement(self):
@@ -59,7 +62,11 @@ class MeasurementManager(object):
             self.start = False
             self.setMagnetState(True)
             self.data = []
-            self.fakedatathread.join()
+            try:
+                self.fakedatathread.join()
+            except Exception as e:
+                print("Error in Abort Measurment, the thread has probably already been ended ")
+                print(e)
 
     #gibt messzustand aus 
     def getMeasurementStatus(self):
@@ -69,11 +76,13 @@ class MeasurementManager(object):
     def setMagnetState(self, state):
         print("Magnetstatus: " , state)
 
+
+
 def generateFakeMeasurements():
     mm = MeasurementManager.instance()
     counter = 0
     while counter < 10:
         mm.data.append( randrange(0,100))
         counter = counter + 1 
-        sleep(1)
+        sleep(0.2)
     mm.endMeasurement()
