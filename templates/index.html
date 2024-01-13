@@ -8,13 +8,38 @@
 </head>
 <body>
     <h1>Zeiten der vollständigen Schwünge:</h1>
-    <ul>
-        {% for value in data %}
-            <li>{{ value }}</li>
-        {% endfor %}
-    </ul>
+    <div id="state"> </div>
+    <div id="rawData"> </div>
     <form method="post" action="/start_measurement">
         <button type="submit">Messung starten</button>
     </form>
+    <form method="post" action="/abort_measurement">
+        <button type="submit">Messung abbrechen</button>
+    </form>
+    <script>
+        setInterval(function () { getData(); }, 100);
+        function getData() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("rawData").innerHTML = this.responseText;
+                }
+            }
+            xhttp.open("GET", "/getData", true);
+            xhttp.send();
+        }
+
+        setInterval(function () { getMeasureState(); }, 100);
+        function getMeasureState() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("state").innerHTML = "ZUSTAND:" + this.responseText;
+                }
+            }
+            xhttp.open("GET", "/getMeasureState", true);
+            xhttp.send();
+        }
+    </script>
 </body>
 </html>
