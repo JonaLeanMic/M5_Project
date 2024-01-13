@@ -10,13 +10,19 @@
     <h1>Zeiten der vollstaendigen Schwuenge:</h1>
     <div id="state"> </div>
     <div id="rawData"> </div>
-    <form  action="/start_measurement">
-        <button type="submit">Messung starten</button>
-    </form>
+
+        <button id="startButton" >Messung starten</button>
     <form  action="/abort_measurement">
         <button type="submit">Messung abbrechen</button>
     </form>
     <script>
+
+        document.getElementById("startButton").addEventListener("click", function (e) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/start_measurement", true);
+            xhttp.send();
+        }, false);
+
         setInterval(function () { getData(); }, 100);
         function getData() {
             var xhttp = new XMLHttpRequest();

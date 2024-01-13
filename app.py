@@ -40,7 +40,7 @@ class TestView(FlaskView):
         return str(mm.getMeasurementStatus())
 
     #api-route um messungen abzubrechen (usability)
-    @route('/abort_Measurement')
+    @route('/abort_measurement')
     def abortMeasurement(self):
         mm = MeasurementManager.instance()
         mm.abortMeasurement()

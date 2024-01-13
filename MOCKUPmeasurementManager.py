@@ -46,18 +46,20 @@ class MeasurementManager(object):
 
     #beendet die messung ohne die Liste zu reinigen 
     def endMeasurement(self):
-        print("[MOCKUP] ending measurement")
-        self.start = False
-        self.setMagnetState(False)
-        self.fakedatathread.join()
+        if self.start == True:
+            print("[MOCKUP] ending measurement")
+            self.start = False
+            self.setMagnetState(False)
+            self.fakedatathread.join()
 
     #beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
     def abortMeasurement(self):
-        print("aborting measurement")
-        self.start = False
-        self.setMagnetState(True)
-        self.data = []
-        self.fakedatathread.join()
+        if self.start == True:
+            print("aborting measurement")
+            self.start = False
+            self.setMagnetState(True)
+            self.data = []
+            self.fakedatathread.join()
 
     #gibt messzustand aus 
     def getMeasurementStatus(self):
