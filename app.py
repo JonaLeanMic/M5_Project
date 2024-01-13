@@ -14,7 +14,7 @@ from flask_classful import FlaskView, route
 import random
 
 app = Flask(__name__)
-
+###
 
 class TestView(FlaskView):
     @route('/')
@@ -26,7 +26,7 @@ class TestView(FlaskView):
     def start_measurement(self):
 
         mm = MeasurementManager.instance()
-        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten
+        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
         mm.startMeasurement()
         #hier könnte man auch eine variable start im mm auf true setzen
         return redirect("/")
