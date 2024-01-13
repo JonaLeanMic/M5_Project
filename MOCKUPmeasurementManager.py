@@ -26,7 +26,7 @@ class MeasurementManager(object):
 
         return self._instance
 
-    #gibt daten zurück
+    #gibt daten zurï¿½ck
     def getData(self):
         return self.data
 
@@ -65,7 +65,7 @@ class MeasurementManager(object):
     def getMeasurementStatus(self):
         return self.start
 
-    #ändert Magnet Zustand 
+    #ï¿½ndert Magnet Zustand 
     def setMagnetState(self, state):
         print("Magnetstatus: " , state)
 
