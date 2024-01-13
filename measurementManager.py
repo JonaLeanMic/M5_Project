@@ -1,7 +1,7 @@
 import time
 from RPi import GPIO
 
-##
+###
 
 #singleton 
 #siehe https://python-patterns.guide/gang-of-four/singleton/

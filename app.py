@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect,send_file
 
 from FileCreator import FileCreator
-from MOCKUPmeasurementManager import MeasurementManager
-#from measurementManager import MeasurementManager
+#from MOCKUPmeasurementManager import MeasurementManager
+from measurementManager import MeasurementManager
 import json
 import glob
 import os
@@ -19,7 +19,7 @@ import random
 app = Flask(__name__)
 
 mm = MeasurementManager()
-####
+#####
 
 class TestView(FlaskView):
     @route('/')
@@ -37,7 +37,7 @@ class TestView(FlaskView):
 
 
     #api-route für daten
-    @route('/getData')
+    @route('/getData', methods = ['GET'])
     def getJsonData(self):
 
 
