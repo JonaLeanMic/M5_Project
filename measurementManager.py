@@ -35,7 +35,7 @@ class MeasurementManager(object):
 
         return self._instance
 
-    #gibt daten zurück
+    #gibt daten zurï¿½ck
     def getData(self):
         return self.data
 
@@ -66,7 +66,7 @@ class MeasurementManager(object):
     def getMeasurementStatus(self):
         return self.start
 
-    #ändert Magnet Zustand 
+    #ï¿½ndert Magnet Zustand 
     def setMagnetState(self, state):
         if state:
             GPIO.output(GPIO.HIGH)
@@ -75,7 +75,7 @@ class MeasurementManager(object):
 
     # function to stop the time of the last full swing
     def interrupt(self):
-        #wenn messung läuft und noch nicht alle werte gesammelt wurden
+        #wenn messung lï¿½uft und noch nicht alle werte gesammelt wurden
         if self.swingCount < self.maxSwings and self.start:
                     # the first full swings starts after the first interrupt
                     if self.interruptCount == 0:
