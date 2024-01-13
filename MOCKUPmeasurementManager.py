@@ -6,25 +6,16 @@ from FileCreator import FileCreator
 #singleton 
 #siehe https://python-patterns.guide/gang-of-four/singleton/
 
-class MeasurementManager(object):
-    _instance = None
+class MeasurementManager:
+
 
     def __init__(self):
-        raise RuntimeError('Nicht erlaubt - rufe instance() um einen Manager zu erhalten ')
+        self.start = False
+        self.data = []
 
-    @classmethod
-    def instance(self):
-        if self._instance is None:
-            print("Erstelle neue Manager Instanz")
-            self._instance = self.__new__(self)
-            self.start = False
-            self.data = []
+        self.lastFilePath = ""
 
-            self.lastFilePath = ""
-
-        return self._instance
-
-    #gibt die momentanen messdaten daten zurück
+    #gibt die momentanen messdaten daten zurï¿½ck
     def getData(self):
         return self.data
 
@@ -37,7 +28,7 @@ class MeasurementManager(object):
             self.start = True
             self.setMagnetState(False)
             self.data = []
-            self.fakedatathread = Thread(target=generateFakeMeasurements)
+            self.fakedatathread = Thread(target=self.generateFakeMeasurements)
             self.fakedatathread.start()
         else:
             print("Measurement is in progress")
@@ -72,17 +63,16 @@ class MeasurementManager(object):
     def getMeasurementStatus(self):
         return self.start
 
-    #ändert Magnet Zustand 
+    #ï¿½ndert Magnet Zustand 
     def setMagnetState(self, state):
         print("Magnetstatus: " , state)
 
 
 
-def generateFakeMeasurements():
-    mm = MeasurementManager.instance()
-    counter = 0
-    while counter < 10:
-        mm.data.append( randrange(0,100))
-        counter = counter + 1 
-        sleep(0.2)
-    mm.endMeasurement()
+    def generateFakeMeasurements(self):
+        counter = 0
+        while counter < 10:
+            self.data.append( randrange(0,100))
+            counter = counter + 1
+            sleep(0.2)
+        self.endMeasurement()

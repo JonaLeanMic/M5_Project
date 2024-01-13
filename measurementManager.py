@@ -42,11 +42,14 @@ class MeasurementManager:
         self.setMagnetState(False)
         self.data = []
 
+
     #beendet die messung ohne die Liste zu reinigen 
     def endMeasurement(self):
         print("ending measurement")
         self.start = False
         self.setMagnetState(False)
+        self.swingCount = 0
+        self.interruptCount = 0
 
     #beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
     def abortMeasurement(self):
@@ -54,6 +57,8 @@ class MeasurementManager:
         self.start = False
         self.setMagnetState(True)
         self.data = []
+        self.swingCount = 0
+        self.interruptCount = 0
         
 
     #gibt messzustand aus
