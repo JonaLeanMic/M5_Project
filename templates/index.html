@@ -14,16 +14,27 @@
     <h2><u>Periodendauer:</u></h2>
     <div id="state"> </div>
     <div id="rawData"> </div>
+    <ol id="dataList"></ol>
 
-        <button id="startButton" >Messung starten</button>
-    <form  action="/abort_measurement">
-        <button id="abbrechButton" type="submit">Messung abbrechen</button>
+    <button id="startButton">Messung starten</button>
+
+    <button id="abortButton">Messung abbrechen</button>
+    <form action="/data_download">
+        <button id="downloadButton">Messwerte herunterladen</button>
     </form>
+
+
     <script>
 
         document.getElementById("startButton").addEventListener("click", function (e) {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/start_measurement", true);
+            xhttp.open("POST", "/start_measurement", true);
+            xhttp.send();
+        }, false);
+
+        document.getElementById("abortButton").addEventListener("click", function (e) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/abort_measurement", true);
             xhttp.send();
         }, false);
 
@@ -32,9 +43,19 @@
         function getData() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    var responseData = this.responseText;
-                    document.getElementById("rawData").innerHTML = responseData.replace('True', 'Ja').replace('False', 'Nein');
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.response)
+                    let child = document.getElementById("dataList").lastElementChild;
+                    while (child) {
+                        document.getElementById("dataList").removeChild(child);
+                        child = document.getElementById("dataList").lastElementChild;
+                    }
+                    for (const element of data) {
+                        let li = document.createElement('li');
+                        li.innerText = element;
+                        document.getElementById("dataList").appendChild(li);
+                    }
+                    document.getElementById("rawData").innerHTML = this.responseText;
                 }
             }
             xhttp.open("GET", "/getData", true);
