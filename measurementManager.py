@@ -1,6 +1,5 @@
 import time
 from RPi import GPIO
-from flask_socketio import SocketIO, emit
 
 GPIO.setmode(GPIO.BCM)
 Interrupt_Pin = 18
@@ -9,7 +8,7 @@ GPIO.setup(Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class MeasurementManager:
 
-    def __init__(self, magnet_pin, socketio):
+    def __init__(self, magnet_pin):
         self.start = False
         self.timeInterrupt = 0
         self.timePeriodSwing = 0
@@ -21,7 +20,6 @@ class MeasurementManager:
         self.start = False
         self.data = []
         self.magnet_pin = magnet_pin
-        self.socketio = socketio
 
         GPIO.add_event_detect(Interrupt_Pin, GPIO.FALLING, callback=self.interrupt, bouncetime=250)
 
@@ -46,8 +44,8 @@ class MeasurementManager:
                     self.timePeriodSwing = self.timeInterrupt - self.timeSwingStart
                     print(str(self.timePeriodSwing))
 
-                    self.data.append(time)
-                    self.socketio.emit('data_update', self.data, namespace='/socket')
+                    self.data.append(self.timePeriodSwing)
+
 
                 self.interruptCount += 1
                 self.swingCount = self.interruptCount/2

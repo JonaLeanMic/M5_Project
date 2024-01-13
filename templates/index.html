@@ -2,45 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Die website der Pendel</title>
-    <link rel="stylesheet" href='/static/style.css'/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measurement App</title>
 </head>
 <body>
-<h1>M5 Pendel</h1>
-<!-- <input type="button" onclick="alert('Das kommt noch weg...oder?')" value="Start"> -->
+    <h1>Zeiten der vollständigen Schwünge:</h1>
+    <ul>
+        {% for value in data %}
+            <li>{{ value }}</li>
+        {% endfor %}
+    </ul>
     <form method="post" action="/start_measurement">
         <button type="submit">Messung starten</button>
     </form>
-    <ul id="measurement-list"></ul>
-
-    <script>
-        // WebSocket-Verbindung erstellen
-        var socket = new WebSocket("ws://localhost:5000/socket");
-
-        // Bei Verbindungsherstellung
-        socket.onopen = function (event) {
-            console.log("WebSocket connection opened:", event);
-        };
-
-        // Bei Empfang von Daten
-        socket.onmessage = function (event) {
-            var data = JSON.parse(event.data);
-            updateList(data);
-        };
-
-        // Funktion zum Aktualisieren der Liste mit den empfangenen Daten
-        function updateList(data) {
-            var list = document.getElementById("measurement-list");
-            list.innerHTML = "";  // Liste leeren
-
-            // Neue Einträge zur Liste hinzufügen
-            data.forEach(function (item) {
-                var listItem = document.createElement("li");
-                listItem.textContent = item;
-                list.appendChild(listItem);
-            });
-        }
-    </script>
-
 </body>
 </html>
