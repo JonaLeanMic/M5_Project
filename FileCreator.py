@@ -1,7 +1,7 @@
 import time
 import csv
 import os
-
+#
 
 #helferklasse schreibt daten in datei zum download 
 #nach https://www.analyticsvidhya.com/blog/2021/08/python-tutorial-working-with-csv-file-for-data-science/

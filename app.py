@@ -3,7 +3,8 @@ from flask_classful import FlaskView, route
 from FileCreator import FileCreator
 import webbrowser
 from threading import Thread
-from MOCKUPmeasurementManager import MeasurementManager
+#from MOCKUPmeasurementManager import MeasurementManager
+from measurementManager import MeasurementManager
 from time import sleep
 import json
 import glob
@@ -14,7 +15,7 @@ import os
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
-
+#
 
 app = Flask(__name__)
 

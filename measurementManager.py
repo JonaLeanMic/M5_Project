@@ -1,7 +1,7 @@
 import time
 from RPi import GPIO
 
-###
+####
 
 #singleton 
 #siehe https://python-patterns.guide/gang-of-four/singleton/
@@ -41,6 +41,8 @@ class MeasurementManager:
         self.start = True
         self.setMagnetState(False)
         self.data = []
+        self.swingCount = 0
+        self.interruptCount = 0
 
 
     #beendet die messung ohne die Liste zu reinigen 
@@ -50,6 +52,7 @@ class MeasurementManager:
         self.setMagnetState(False)
         self.swingCount = 0
         self.interruptCount = 0
+
 
     #beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
     def abortMeasurement(self):
@@ -79,7 +82,7 @@ class MeasurementManager:
     def interrupt(self, channel):
         #wenn messung l�uft und noch nicht alle werte gesammelt wurden
 
-        self.interruptCount = 0
+        #self.interruptCount = 0
         if self.swingCount <= self.maxSwings and self.start:
                     # the first full swings starts after the first interrupt
                     if self.interruptCount == 0:
@@ -91,11 +94,15 @@ class MeasurementManager:
                         self.timeSwingStart = self.timeInterrupt
                         self.timeInterrupt = time.monotonic()
                         self.timePeriodSwing = self.timeInterrupt - self.timeSwingStart
+                        self.timePeriodSwing = round(self.timePeriodSwing,3)
                         print(str(self.timePeriodSwing))
 
                         self.data.append(self.timePeriodSwing)
+                    if self.interruptCount == 20:
+                        self.endMeasurement()
 
                     self.interruptCount += 1
                     self.swingCount = self.interruptCount/2
-        else:
-            self.endMeasurement()
+
+
+
