@@ -6,8 +6,11 @@ import os
 #helferklasse schreibt daten in datei zum download 
 #nach https://www.analyticsvidhya.com/blog/2021/08/python-tutorial-working-with-csv-file-for-data-science/
 class FileCreator(object):
+    def __init__(self):
+        None
+
     #funktion zum schreiben in datei
-    def writeOutData(self, dataToWrite):
+    def writeOutData(self,dataToWrite):
         filename = "M5-" + str(time.ctime().replace(" ", "-").replace(":","-")) +".csv"
         path = os.getcwd() + "/files/" + filename
         print("Filename for new file: ", filename)

@@ -19,7 +19,7 @@
     <button id="abortButton">Messung abbrechen</button>
 
     <!-- Form für Daten herunterladen -->
-    <form action="/data_download" method="post">
+    <form action="/data_download">
         <button type="submit" id="downloadButton">Messwerte herunterladen</button>
     </form>
 
@@ -68,13 +68,23 @@
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
+                    
                     var responseText = this.responseText;
                     document.getElementById("state").innerHTML = "Messung aktiv?: " + responseText.replace('True', 'Ja').replace('False', 'Nein');
+                    if (this.responseText === "True") {
+                        document.getElementById("downloadButton").disabled = true;
+                        document.getElementById("downloadButton").innerHTML = "Warte...";
+                    }
+                    else {
+                        document.getElementById("downloadButton").disabled = false;
+                        document.getElementById("downloadButton").innerHTML = "Messwerte herunterladen";
+                    }
                 }
             }
             xhttp.open("GET", "/getMeasureState", true);
             xhttp.send();
         }
+
     </script>
 </div>
 </body>

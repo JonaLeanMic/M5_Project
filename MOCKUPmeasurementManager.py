@@ -3,17 +3,13 @@ from random import randrange
 from threading import Thread
 from FileCreator import FileCreator
 
-
-# singleton
-# siehe https://python-patterns.guide/gang-of-four/singleton/
-
 class MeasurementManager:
-
-    def _init_(self):
+    def __init__(self):
+        print("Init mockup")
         self.start = False
         self.data = []
-
-        self.lastFilePath = ""
+        self.counter = 0
+        print("mm start", self.start)
 
     # gibt die momentanen messdaten daten zur�ck
     def getData(self):
@@ -39,11 +35,10 @@ class MeasurementManager:
             print("[MOCKUP] ending measurement")
             self.start = False
             self.setMagnetState(True)
-            FileCreator.writeOutData(self.data)
             try:
                 self.fakedatathread.join()
             except Exception as e:
-                print("Error in End Measurment, the thread has probably already been ended ")
+                print("Error in End Measurement, the thread has probably already been ended ")
 
     # beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
     def abortMeasurement(self):
@@ -62,14 +57,17 @@ class MeasurementManager:
     def getMeasurementStatus(self):
         return self.start
 
+    def getSwingCount(self):
+        return self.counter
+
     # �ndert Magnet Zustand
     def setMagnetState(self, state):
         print("Magnetstatus: ", state)
 
     def generateFakeMeasurements(self):
-        counter = 0
-        while counter < 10:
+        self.counter = 0
+        while self.counter < 10:
             self.data.append(randrange(0, 100))
-            counter = counter + 1
+            self.counter = self.counter + 1
             sleep(0.2)
         self.endMeasurement()
