@@ -7,6 +7,7 @@ from threading import Thread
 from measurementManager import MeasurementManager
 from time import sleep
 import json
+import pyautogui
 import glob
 import os
 
@@ -15,37 +16,33 @@ import os
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
-#
+
 
 app = Flask(__name__)
 
 mm = MeasurementManager()
 print(mm.start)
 
-
+# class for a flask interface
 class TestView(FlaskView):
     @route('/')
     def index(self):
         return render_template('index.html')
 
+    # route to start measurement
     @route('/start_measurement', methods=['POST'])
     def start_measurement(self):
 
-        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
         mm.startMeasurement()
-        #hier könnte man auch eine variable start im mm auf true setzen
         return redirect("/")
 
-
-    #api-route für daten
+    # api-route for data
     @route('/getData')
     def getJsonData(self):
 
-
-
         return json.dumps(mm.getData())
 
-    #api route für systemzustand
+    # api route to get the status of the process
     @route('/getMeasureState')
     def getMeasureState(self):
 
@@ -55,15 +52,14 @@ class TestView(FlaskView):
     def getCount(self):
         return str(mm.getSwingCount())
 
-    #api-route um messungen abzubrechen (usability)
+    # api route to stop the program
     @route('/abort_measurement')
     def abortMeasurement(self):
 
         mm.abortMeasurement()
         return redirect("/")
 
-    #api-route um messungen abzubrechen (usability)
-
+    # api-route to download the measured data
     @route('/data_download')
     def download(self):
         if not mm.data:
@@ -75,9 +71,16 @@ class TestView(FlaskView):
 
         return send_file(file_path, as_attachment=True,)
 
+
+# method to start the browser when you open the program
 def startBrowser():
     sleep(3)
     webbrowser.open("http://127.0.0.1:5000")
+    handled = False
+    if not handled:
+        pyautogui.hotkey('ctrl', 'w')
+        pyautogui.hotkey('f11')
+        handled = True
 
 
 webThread = Thread(target=startBrowser)
@@ -86,7 +89,6 @@ webThread.start()
 TestView.register(app, route_base='/')
 
 app.run(debug=True, host='0.0.0.0', port=5000)
-
 
 
 while 1:

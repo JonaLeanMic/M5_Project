@@ -1,10 +1,8 @@
 import time
 from RPi import GPIO
 
-####
 
-#singleton 
-#siehe https://python-patterns.guide/gang-of-four/singleton/
+# MeasurementManager is managing everything around the sensor, the magnet and the calculation of the measurement data
 class MeasurementManager:
 
     def __init__(self):
@@ -25,17 +23,11 @@ class MeasurementManager:
         GPIO.setup(self.Interrupt_Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.add_event_detect(self.Interrupt_Pin, GPIO.FALLING, callback=self.interrupt, bouncetime=250)
 
-
-
-
-
-    #gibt daten zur�ck
+    # returns the list of measurement data
     def getData(self):
         return self.data
 
-    #setzt start auf wahr
-    #reinigt list 
-    #vielleicht speichern wir die Listen in einer Datei?
+    # method to start the process of measurement and sets all important values to 0 and turns of the magnet
     def startMeasurement(self):
         print("starting measurement")
         self.start = True
@@ -44,65 +36,61 @@ class MeasurementManager:
         self.swingCount = 0
         self.interruptCount = 0
 
-
-    #beendet die messung ohne die Liste zu reinigen 
+    # method to end the measurement when the process is finished correctly
     def endMeasurement(self):
         print("ending measurement")
         self.start = False
-        self.setMagnetState(False)
+        self.setMagnetState(True)
         self.swingCount = 0
         self.interruptCount = 0
 
-
-    #beendet messung, schaltet magnet an, reinigt liste (um neuen Durchgang zu starten wenn etwas schiefgeht)
+    # method that stops the process of measuring if something went wrong, resets all numbers and turns on the magnet
     def abortMeasurement(self):
         print("aborting measurement")
         self.start = False
         self.setMagnetState(True)
         self.data = []
-        self.swingCount = 0
+        self.swingCOunt = 0
         self.interruptCount = 0
-        
 
-    #gibt messzustand aus
+    # method to return the status of the process
     def getMeasurementStatus(self):
         return self.start
 
+    # returns the count of interrupts
     def getSwingCount(self):
         return self.interruptCount
 
-    #�ndert Magnet Zustand 
+    # method to turn the magnet on & off
     def setMagnetState(self, state):
         if state:
             GPIO.output(self.magnet_pin, GPIO.HIGH)
         else:
             GPIO.output(self.magnet_pin, GPIO.LOW)
 
-    ## function to stop the time of the last full swing
+    # function to stop the time of the swings and stores them in data list
     def interrupt(self, channel):
-        #wenn messung l�uft und noch nicht alle werte gesammelt wurden
 
-        #self.interruptCount = 0
         if self.swingCount <= self.maxSwings and self.start:
-                    # the first full swings starts after the first interrupt
-                    if self.interruptCount == 0:
-                        print("start")
-                        self.timeInterrupt = time.monotonic()
-                    # every second interrupt is a full swing
-                    elif self.interruptCount % 2 == 0:
-                        print(self.swingCount)
-                        self.timeSwingStart = self.timeInterrupt
-                        self.timeInterrupt = time.monotonic()
-                        self.timePeriodSwing = self.timeInterrupt - self.timeSwingStart
-                        self.timePeriodSwing = round(self.timePeriodSwing,3)
-                        print(str(self.timePeriodSwing))
+            # the first full swings starts after the first interrupt
+            if self.interruptCount == 0:
+                print("start")
+                self.timeInterrupt = time.monotonic()
+            # every second interrupt is a full swing
+            elif self.interruptCount % 2 == 0:
+                print(self.swingCount)
+                self.timeSwingStart = self.timeInterrupt
+                self.timeInterrupt = time.monotonic()
+                self.timePeriodSwing = self.timeInterrupt - self.timeSwingStart
+                self.timePeriodSwing = round(self.timePeriodSwing,3)
+                print(str(self.timePeriodSwing))
 
-                        self.data.append(self.timePeriodSwing)
-                    if self.interruptCount == 20:
-                        self.endMeasurement()
+                self.data.append(self.timePeriodSwing)
+            if self.interruptCount == 20:
+                self.endMeasurement()
 
-                    self.interruptCount += 1
-                    self.swingCount = self.interruptCount/2
+            self.interruptCount += 1
+            self.swingCount = self.interruptCount/2
 
 
 
