@@ -12,15 +12,14 @@
     <h1>M3 Pendel</h1>
     <h2><u>Periodendauer:</u></h2>
     <div id="state"> </div>
-    <div id="rawData"> </div>
     <ol id="dataList"></ol>
 
     <button id="startButton">Messung starten</button>
     <button id="abortButton">Messung abbrechen</button>
 
     <!-- Form für Daten herunterladen -->
-    <form action="/data_download" method="post">
-        <button type="submit" id="downloadButton">Messwerte herunterladen</button>
+    <form action="/data_download">
+        <button  id="downloadButton">Messwerte herunterladen</button>
     </form>
 
     <script>
@@ -43,8 +42,7 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     var data = JSON.parse(this.response)
-                    var responseData = this.responseText;
-                    document.getElementById("rawData").innerHTML = responseData.replace('True', 'Ja').replace('False', 'Nein');
+
                     let child = document.getElementById("dataList").lastElementChild;
                     while (child) {
                         document.getElementById("dataList").removeChild(child);

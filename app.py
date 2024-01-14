@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request, redirect,send_file
+from flask import Flask, render_template, request, redirect, send_file
 
 from FileCreator import FileCreator
-#from MOCKUPmeasurementManager import MeasurementManager
+# from MOCKUPmeasurementManager import MeasurementManager
 from measurementManager import MeasurementManager
 import json
 import glob
 import os
 
-#mit diesem code wird der Console-Spam von flask ausgeschaltet 
-#beim debuggen von flask-komponenten bitte auskommentieren 
+# mit diesem code wird der Console-Spam von flask ausgeschaltet
+# beim debuggen von flask-komponenten bitte auskommentieren
 # import logging
 # log = logging.getLogger('werkzeug')
 # log.setLevel(logging.ERROR)
@@ -19,6 +19,8 @@ import random
 app = Flask(__name__)
 
 mm = MeasurementManager()
+
+
 #####
 
 class TestView(FlaskView):
@@ -26,38 +28,30 @@ class TestView(FlaskView):
     def index(self):
         return render_template('index.html')
 
-
-    @route('/start_measurement', methods = ['POST'])
+    @route('/start_measurement', methods=['POST'])
     def start_measurement(self):
-
-        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
+        # GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
         mm.startMeasurement()
-        #hier könnte man auch eine variable start im mm auf true setzen
+        # hier könnte man auch eine variable start im mm auf true setzen
         return redirect("/")
 
-
-    #api-route für daten
-    @route('/getData', methods = ['GET'])
+    # api-route für daten
+    @route('/getData')
     def getJsonData(self):
-
-
-
         return json.dumps(mm.getData())
 
-    #api route für systemzustand
+    # api route für systemzustand
     @route('/getMeasureState')
     def getMeasureState(self):
-
         return str(mm.getMeasurementStatus())
 
-    #api-route um messungen abzubrechen (usability)
+    # api-route um messungen abzubrechen (usability)
     @route('/abort_measurement')
     def abortMeasurement(self):
-
         mm.abortMeasurement()
         return redirect("/")
 
-    #api-route um messungen abzubrechen (usability)
+    # api-route um messungen abzubrechen (usability)
     # @route('/data_download')
     # def download(self):
     #     #nach https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder
@@ -83,8 +77,6 @@ class TestView(FlaskView):
 TestView.register(app, route_base='/')
 
 app.run(debug=True, host='0.0.0.0', port=5000)
-
-
 
 while 1:
     None
