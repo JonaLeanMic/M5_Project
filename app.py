@@ -1,27 +1,27 @@
-from flask import Flask, render_template, request, redirect, send_file
-
+from flask import Flask, render_template, request, redirect,send_file
+from flask_classful import FlaskView, route
 from FileCreator import FileCreator
-# from MOCKUPmeasurementManager import MeasurementManager
-from measurementManager import MeasurementManager
+import webbrowser
+from threading import Thread
+from MOCKUPmeasurementManager import MeasurementManager
+from time import sleep
 import json
 import glob
 import os
 
-# mit diesem code wird der Console-Spam von flask ausgeschaltet
-# beim debuggen von flask-komponenten bitte auskommentieren
-# import logging
-# log = logging.getLogger('werkzeug')
-# log.setLevel(logging.ERROR)
+#mit diesem code wird der Console-Spam von flask ausgeschaltet 
+#beim debuggen von flask-komponenten bitte auskommentieren 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
-from flask_classful import FlaskView, route
-import random
+
 
 app = Flask(__name__)
 
 mm = MeasurementManager()
-
-
-#####
+print(mm.start)
+####
 
 class TestView(FlaskView):
     @route('/')
@@ -30,38 +30,40 @@ class TestView(FlaskView):
 
     @route('/start_measurement', methods=['POST'])
     def start_measurement(self):
-        # GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
+
+        #GPIO.output(Magnet_Pin, GPIO.LOW) #magnet ausschalten#
         mm.startMeasurement()
-        # hier könnte man auch eine variable start im mm auf true setzen
+        #hier könnte man auch eine variable start im mm auf true setzen
         return redirect("/")
 
-    # api-route für daten
+
+    #api-route für daten
     @route('/getData')
     def getJsonData(self):
+
+
+
         return json.dumps(mm.getData())
 
-    # api route für systemzustand
+    #api route für systemzustand
     @route('/getMeasureState')
     def getMeasureState(self):
+
         return str(mm.getMeasurementStatus())
 
-    # api-route um messungen abzubrechen (usability)
+    @route('/getSwingCount')
+    def getCount(self):
+        return str(mm.getSwingCount())
+
+    #api-route um messungen abzubrechen (usability)
     @route('/abort_measurement')
     def abortMeasurement(self):
+
         mm.abortMeasurement()
         return redirect("/")
 
-    # api-route um messungen abzubrechen (usability)
-    # @route('/data_download')
-    # def download(self):
-    #     #nach https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder
-    #     list_of_files = glob.glob(os.getcwd() + "/files/*.csv" )
-    #     if not list_of_files:
-    #         return "No files available for download."
-    #     latest_file = max(list_of_files, key=os.path.getctime)
-    #     print(latest_file)
-    #
-    #     return send_file(latest_file)
+    #api-route um messungen abzubrechen (usability)
+
     @route('/data_download')
     def download(self):
         if not mm.data:
@@ -71,12 +73,21 @@ class TestView(FlaskView):
         file_path = file_creator.writeOutData(mm.data)
         print("File path:", file_path)
 
-        return send_file(file_path, as_attachment=True)
+        return send_file(file_path, as_attachment=True,)
 
+def startBrowser():
+    sleep(3)
+    webbrowser.open("http://127.0.0.1:5000")
+
+
+webThread = Thread(target=startBrowser)
+webThread.start()
 
 TestView.register(app, route_base='/')
 
 app.run(debug=True, host='0.0.0.0', port=5000)
 
+
+
 while 1:
-    None
+    print("loop")

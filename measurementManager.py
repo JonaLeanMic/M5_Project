@@ -65,6 +65,9 @@ class MeasurementManager:
     def getMeasurementStatus(self):
         return self.start
 
+    def getSwingCount(self):
+        return self.interruptCount
+
     #�ndert Magnet Zustand 
     def setMagnetState(self, state):
         if state:
@@ -76,6 +79,7 @@ class MeasurementManager:
     def interrupt(self, channel):
         #wenn messung l�uft und noch nicht alle werte gesammelt wurden
 
+        self.interruptCount = 0
         if self.swingCount <= self.maxSwings and self.start:
                     # the first full swings starts after the first interrupt
                     if self.interruptCount == 0:
