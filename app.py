@@ -16,12 +16,11 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 
-
 app = Flask(__name__)
 
 mm = MeasurementManager()
 print(mm.start)
-####
+
 
 class TestView(FlaskView):
     @route('/')
