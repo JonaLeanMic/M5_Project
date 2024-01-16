@@ -1,10 +1,11 @@
 Versuch M5 - Mathematisches Pendel (Medieningenieur:in, 3. Semester)
 Projekt von Jonathan Michel, Miriam Bernhardt, Hannah Neppert
 
-Das Programm dient dazu, die Messungen des Laborversuchs "Mathematisches Pendel" durchzuführen und die Messwerte anzuzeigen und als CSV Datei zu exportieren.
+Das Programm dient dazu, die Messungen des Laborversuchs "Mathematisches Pendel" durchzuführen und die Messwerte anzuzeigen und als XLS Datei zu exportieren.
 
 Vorbereitung:
 Beim Start des Raspberry Pis öffnet sich das Programm automatisch. (Zugangsdaten Raspberry Pi: Username: "ming" Passwort: "laborm5")
+Außerdem lässt sich das Programm auch über eine Desktop-Verknüpfung "PendelM5" öffnen.
 Der Raspberry Pi ist im Netzwerk von einem ESP.
 Es kann auch von anderen Endgeräten auf das Programm zugegriffen werden. Dafür sind folgende Schritte notwendig:
 1. Verbindung mit dem Wlan-Netzwerk "VersuchM5", Passwort: "passwort"
