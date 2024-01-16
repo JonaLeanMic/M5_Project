@@ -26,8 +26,7 @@ Falls die Messung neugestartet werden muss, kann dies über den Button "Messung 
 
 Starten des Programms über die Konsole:
 1. Start der Konsole
-2. Navigieren zum Verzeichnis: cd Versuch-M5
-3. Starten des Programms: python app.py
+2. Starten des Programms: Versuch-M5/python app.py
 
 Beenden des Programms über die Konsole:
 1. Starten der Konsole (neuer Tab)
