@@ -10,7 +10,7 @@ Der Raspberry Pi ist im Netzwerk von einem ESP.
 Es kann auch von anderen Endgeräten auf das Programm zugegriffen werden. Dafür sind folgende Schritte notwendig:
 1. Verbindung mit dem Wlan-Netzwerk "VersuchM5", Passwort: "passwort"
 2. Öffnen eines Browsers
-3. Eingeben der IP-Adresse des Raspberry Pis in die Suchzeile: "......." (Falls zukünftig ein anderes Netzwerk verwendet wird, muss die IP-Adresse angepasst werden.)
+3. Eingeben der IP-Adresse des Raspberry Pis in die Suchzeile: "192.168.4.2:5000" (Falls zukünftig ein anderes Netzwerk verwendet wird, muss die IP-Adresse angepasst werden.)
 
 
 Bedienung des Programms:
