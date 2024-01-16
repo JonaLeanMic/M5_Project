@@ -19,14 +19,14 @@ Der Magnet wird dadurch ausgeschaltet und das Pendel fängt an, sich zu bewegen.
 Die Zeit misst das Programm für 10 Pendelschwingungen einzeln und zeigt die Werte direkt an.
 Nach 10 Messungen wird der Magnet wieder eingeschaltet und stoppt somit die Schwinungen.
 Wenn die Messung abgeschlossen ist, können die Ergebnisse über den Button "Messdaten herunterladen" auf dem jeweiligen Gerät gespeichert werden.
-Als Datei erhält man eine .csv-Datei, die in Excel importiert werden kann.
+Als Datei erhält man eine .xls-Datei, die direkt mit Excel geöffnet werden kann.
 
 Abbruch des Messung:
 Falls die Messung neugestartet werden muss, kann dies über den Button "Messung abbrechen" erfolgen. Die Messwerte werden dann zurückgesetzt und die Messung kann neu gestartet werden.
 
 Starten des Programms über die Konsole:
 1. Start der Konsole
-2. Navigieren zum Verzeichnis: cd PyScripts/project
+2. Navigieren zum Verzeichnis: cd Versuch-M5
 3. Starten des Programms: python app.py
 
 Beenden des Programms über die Konsole:
@@ -40,20 +40,11 @@ Beenden des Programms über die Konsole:
 
 Zum Programm-Code:
 Das Programm verwendet einen Flask-Server, um auf einer Webseite zu laufen.
-Es wurden folgende Bibliotheken verwendet:
+Es wurden folgende Bibliotheken heruntergeladen:
 Flask
 Flask_Classful
-RPi.GPIO
 pyautogui
-webbrowser
-threading
-time
-json
-logging
-random
-csv
-os
-RPi
+xlsxwriter
 
 
 
