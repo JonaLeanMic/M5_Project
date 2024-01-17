@@ -43,7 +43,7 @@ Das Programm verwendet einen Flask-Server, um auf einer Webseite zu laufen.
 Es wurden folgende Bibliotheken heruntergeladen:
 Flask
 Flask_Classful
-pyautogui
+Subprocess
 xlsxwriter
 
 
